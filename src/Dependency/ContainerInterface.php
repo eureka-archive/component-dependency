@@ -9,14 +9,12 @@
 
 namespace Eureka\Component\Dependency;
 
-use Eureka\Component\Cache\CacheWrapperAbstract;
-use Eureka\Component\Database\Database;
+;
 
 /**
  * Interface for Container component.
  *
- * @author  Romain Cottard
- * @version 1.0.0
+ * @author Romain Cottard
  */
 interface ContainerInterface
 {
@@ -46,7 +44,7 @@ interface ContainerInterface
      * Get instance for given key.
      *
      * @param  string $key Key name to retrieve the instance
-     * @return object
+     * @return mixed
      * @throws  \LogicException
      */
     public function get($key);
@@ -57,7 +55,7 @@ interface ContainerInterface
      * @param  string $key Key name to retrieve the instance
      * @param  object $instance Instance to attach
      * @param  string $type Object type
-     * @return $this
+     * @return self
      * @throws \LogicException
      */
     public function attach($key, $instance, $type = self::OBJECT);
@@ -67,7 +65,7 @@ interface ContainerInterface
      * Implicit destruct the instance.
      *
      * @param  string $key Key name to retrieve the instance
-     * @return $this
+     * @return self
      */
     public function detach($key);
 
@@ -84,7 +82,7 @@ interface ContainerInterface
      * Get cache instance
      *
      * @param  string $config Config name
-     * @return CacheWrapperAbstract
+     * @return \Eureka\Component\Cache\CacheWrapperAbstract
      * @throws \LogicException
      */
     public function getCache($config);

@@ -9,14 +9,10 @@
 
 namespace Eureka\Component\Dependency;
 
-use Eureka\Component\Cache\CacheWrapperAbstract;
-use Eureka\Component\Database\Database;
-
 /**
  * Container class.
  *
- * @author  Romain Cottard
- * @version 1.0.0
+ * @author Romain Cottard
  */
 class Container implements ContainerInterface
 {
@@ -56,7 +52,7 @@ class Container implements ContainerInterface
      * Get instance for given key.
      *
      * @param  string $key Key name to retrieve the instance
-     * @return object
+     * @return mixed
      * @throws \LogicException
      */
     public function get($key)
@@ -74,28 +70,24 @@ class Container implements ContainerInterface
      * @param  string $key Key name to retrieve the instance
      * @param  object $instance Instance to attach
      * @param  string $type Type of object
-     * @return $this
+     * @return self
      * @throws \LogicException
      */
     public function attach($key, $instance, $type = self::OBJECT)
     {
         switch ($type) {
             case self::OBJECT:
+            case self::CACHE:
                 if (!is_object($instance)) {
                     throw new \LogicException('Instance is not an object!');
                 }
+                $key = $type . '_' . $key;
                 break;
             case self::DATABASE:
                 if (!($instance instanceof \PDO)) {
                     throw new \LogicException();
                 }
                 $key = self::DATABASE . '_' . $key;
-                break;
-            case self::CACHE:
-                if (!($instance instanceof CacheWrapperAbstract)) {
-                    throw new \LogicException();
-                }
-                $key = self::CACHE . '_' . $key;
                 break;
         }
 
@@ -113,7 +105,7 @@ class Container implements ContainerInterface
      * Implicit destruct the instance.
      *
      * @param  string $key Key name to retrieve the instance
-     * @return $this
+     * @return self
      */
     public function detach($key)
     {
@@ -140,7 +132,7 @@ class Container implements ContainerInterface
      * Get cache instance
      *
      * @param  string $config Cache config name
-     * @return CacheWrapperAbstract
+     * @return \Eureka\Component\Cache\CacheWrapperAbstract
      * @throws \LogicException
      */
     public function getCache($config)
