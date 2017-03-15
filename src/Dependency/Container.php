@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright (c) 2010-2016 Romain Cottard
+ * Copyright (c) 2010-2017 Romain Cottard
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -65,6 +65,16 @@ class Container implements ContainerInterface
     }
 
     /**
+     * Get all data.
+     *
+     * @return array
+     */
+    public function getAll()
+    {
+        return $this->instances;
+    }
+
+    /**
      * Attach new instance of any class to this container.
      *
      * @param  string $key Key name to retrieve the instance
@@ -81,13 +91,11 @@ class Container implements ContainerInterface
                 if (!is_object($instance)) {
                     throw new \LogicException('Instance is not an object!');
                 }
-                $key = $type . '_' . $key;
                 break;
             case self::DATABASE:
                 if (!($instance instanceof \PDO)) {
                     throw new \LogicException();
                 }
-                $key = self::DATABASE . '_' . $key;
                 break;
         }
 
@@ -125,7 +133,7 @@ class Container implements ContainerInterface
      */
     public function getDatabase($config)
     {
-        return $this->get(self::DATABASE . '_' . $config);
+        return $this->get($config);
     }
 
     /**
@@ -137,6 +145,6 @@ class Container implements ContainerInterface
      */
     public function getCache($config)
     {
-        return $this->get(self::CACHE . '_' . $config);
+        return $this->get($config);
     }
 }
